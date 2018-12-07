@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)..\TW Desktop\bin\Debug\$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)</OutputFile>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
