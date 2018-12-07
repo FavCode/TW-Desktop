@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -56,6 +57,8 @@ namespace TW_Desktop
             DrawTime(graphics);
             DrawIcons(graphics);
             DrawContextMenu(graphics);
+            if (Program.debugMode)
+                DrawDebug(graphics);
             drawing = false;
         }
 
@@ -101,6 +104,15 @@ namespace TW_Desktop
         {
             if (Math.Abs(cMenuTargetWidth - cMenuWidth) / cMenuAnimM == 0 && cMenuAnimM != 2)
                 cMenuAnimM--;
+        }
+
+        void DrawDebug(Graphics g)
+        {
+            Brush red = new SolidBrush(Color.Red);
+            Font f = new Font(fontManager.GetLoadedFont("Consolas"), 12);
+            Font iF = new Font(fontManager.GetLoadedFont("Consolas"), 12, FontStyle.Italic);
+            g.DrawString("Debug Mode", f, red, new PointF(0, 0));
+            g.DrawString($"v{Assembly.GetExecutingAssembly().GetName().Version} built by {BuildInformation.BuildOS} ({BuildInformation.BuildArchitecture}) at {BuildInformation.BuildDate}", iF, red, new PointF(0, Height - g.MeasureString("Height Test", iF).Height));
         }
 
         void DrawBackground(Graphics g)
@@ -199,6 +211,9 @@ namespace TW_Desktop
             }.Start();
             label2.Text = "Loading fonts...";
             fontManager.LoadFonts();
+            fontManager.LoadFonts(".ttf");
+            foreach (string ff in fontManager.GetLoadedFonts())
+                Console.WriteLine(ff);
             label2.Text = "Finished";
             foreach (Control c in Controls.Cast<Control>().ToList())
                 Controls.Remove(c);
