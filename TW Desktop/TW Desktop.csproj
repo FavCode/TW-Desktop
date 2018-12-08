@@ -71,7 +71,6 @@
     <EmbeddedResource Include="msyh.ttc" />
     <EmbeddedResource Include="msyhl.ttc" />
     <EmbeddedResource Include="consola.ttf" />
-    <EmbeddedResource Include="consolai.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

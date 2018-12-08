@@ -7,8 +7,29 @@ namespace TW_Desktop
 {
     public static class BuildInformation
     {
-        public static string BuildDate = "%BuildDate%";
-        public static string BuildOS = "%BuildOS%";
-        public static string BuildArchitecture = "%Architecture%";
+        private static readonly string buildDate = "%BuildDate%";
+        private static readonly string buildOS = "%BuildOS%";
+        private static readonly string buildArchitecture = "%Architecture%";
+        public static string BuildDate
+        {
+            get
+            {
+                return (buildDate == "%BuildDate%" ? "Unknown" : buildDate);
+            }
+        }
+        public static string BuildOS
+        {
+            get
+            {
+                return (buildOS == "%BuildOS%" ? "Unknown" : buildOS);
+            }
+        }
+        public static string BuildArchitecture
+        {
+            get
+            {
+                return (buildArchitecture == "%Architecture%" ? "Unknown" : buildArchitecture);
+            }
+        }
     }
 }
