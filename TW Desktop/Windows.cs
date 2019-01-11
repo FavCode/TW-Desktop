@@ -8,6 +8,10 @@ namespace TW_Desktop
 {
     public class Windows
     {
+        [DllImport("kernel32.dll")]
+        public static extern bool AllocConsole();
+        [DllImport("kernel32.dll")]
+        public static extern bool FreeConsole();
         [DllImport("user32.dll")]
         public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
         [DllImport("user32.dll")]

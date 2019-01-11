@@ -15,6 +15,38 @@ namespace TW_Desktop
 {
     public partial class Form1 : Form
     {
+        class BackgroundObject
+        {
+            public static string[] BackgroundChars = new string[]
+            {
+                "□",
+                "⭕",
+                "■",
+                "●",
+                "▲"
+            };
+
+            public float x;
+            public float y;
+            public float rotation;
+            public float rotationDir;
+            public float speed;
+            public string text;
+            public BackgroundObject(float x,float y,float rotation,float speed)
+            {
+                this.x = x;
+                this.y = y;
+                this.rotation = rotation;
+                this.speed = speed;
+                rotationDir = new Random().Next(-1, 1);
+                text = BackgroundChars[new Random().Next(0, BackgroundChars.Length - 1)];
+            }
+        }
+
+        string handle = "";
+
+        string debugMessage = "";
+
         bool drawing = false;
         bool rendering = false;
 
@@ -35,8 +67,11 @@ namespace TW_Desktop
         string lastUpdateTime = "";
         delegate void Draw();
 
+        List<BackgroundObject> bo = new List<BackgroundObject>();
+
         BufferedGraphics graphicsBuffer;
         FontManager fontManager = new FontManager();
+        PluginManager pluginManager = new PluginManager();
         Bitmap bm;
         Graphics graphics;
 
@@ -80,7 +115,10 @@ namespace TW_Desktop
             {
                 int trayCount = Process.GetProcessesByName("DesktopTray").Length;
                 if (trayCount == 0)
-                    Process.Start(Application.StartupPath + @"\DesktopTray.exe", Handle.ToInt32().ToString());
+                {
+                    Logger.Info("Tray has been ended, restarting...");
+                    Process.Start(Application.StartupPath + @"\DesktopTray.exe", handle);
+                }
                 else
                     for (int i = 0; i == trayCount; i++)
                         Process.GetProcessesByName("DesktopTray")[i].Kill();
@@ -113,12 +151,26 @@ namespace TW_Desktop
             Font iF = new Font(fontManager.GetLoadedFont("Consolas"), 12, FontStyle.Italic);
             g.DrawString("Debug Mode", f, red, new PointF(0, 0));
             g.DrawString($"v{Assembly.GetExecutingAssembly().GetName().Version} built by {BuildInformation.BuildOS} ({BuildInformation.BuildArchitecture}) at {BuildInformation.BuildDate}", iF, red, new PointF(0, Height - g.MeasureString("Height Test", iF).Height));
+            g.DrawString(debugMessage, f, red, new PointF(Width - g.MeasureString(debugMessage, f).Width, 0));
         }
 
         void DrawBackground(Graphics g)
         {
+            Font f = new Font(fontManager.GetLoadedFont("Microsoft YaHei UI Light"), 128);
             Brush b = new LinearGradientBrush(ClientRectangle, Color.FromArgb(255, 161, 255, 213), Color.FromArgb(255, 47, 247, 157), LinearGradientMode.BackwardDiagonal);
+            Brush bb = new SolidBrush(Color.DarkGray);
             g.FillRectangle(b, ClientRectangle);
+            /*foreach (BackgroundObject i in bo)
+            {
+                if (i.speed == 0)
+                    bo.Remove(i);
+                i.y -= i.speed;
+                i.rotation += i.rotationDir * i.speed;
+                g.Transform.Rotate(i.rotation);
+                g.DrawString(i.text, f, bb, new PointF(i.x, i.y));
+                i.speed -= 1;
+                g.Transform.Rotate(0);
+            }*/
         }
 
         void DrawTime(Graphics g)
@@ -197,35 +249,54 @@ namespace TW_Desktop
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            label2.Text = "Starting tray...";
-            Process.Start(Application.StartupPath + @"\DesktopTray.exe", Handle.ToString());
-            label2.Text = "Starting tray checker...";
-            new Thread(TrayChecker)
+            handle = Handle.ToString();
+            if (Program.useTray)
             {
-                IsBackground = true
-            }.Start();
+                label2.Text = "Starting tray...";
+                Process.Start(Application.StartupPath + @"\DesktopTray.exe", Handle.ToString());
+                Logger.Info("Start tray with handle " + Handle.ToString());
+                label2.Text = "Starting tray checker...";
+                Logger.Info("Start tray protecter");
+                new Thread(TrayChecker)
+                {
+                    IsBackground = true
+                }.Start();
+            }
             label2.Text = "Starting timer...";
+            Logger.Info("Start update timer");
             new Thread(TimerUpdate)
             {
                 IsBackground = true
             }.Start();
             label2.Text = "Loading fonts...";
+            Logger.Info("Load fonts");
             fontManager.LoadFonts();
             fontManager.LoadFonts(".ttf");
-            foreach (string ff in fontManager.GetLoadedFonts())
-                Console.WriteLine(ff);
+            Logger.Info(fontManager.Fonts.Families.Length + " font(s) loaded");
+            label2.Text = "Loading plugins...";
+            Logger.Info("Load plugins from plugins folder");
+            pluginManager.LoadPlugins();
+            Logger.Info(pluginManager.Plugins.Length + " plugin(s) loaded");
             label2.Text = "Finished";
+            Logger.Info("Load finished");
+            Logger.Info("Remove all windows controls");
             foreach (Control c in Controls.Cast<Control>().ToList())
                 Controls.Remove(c);
+            for (int i = 0; i < Width / 20; i++)
+                bo.Add(new BackgroundObject(new Random().Next(10, Width - 20), Height + 50, new Random().Next(0, 360), new Random().Next((int)(Height * 0.05)) + new Random().Next(-3, 3)));
+            Logger.Info("Bind paint event");
             Paint += new PaintEventHandler(Form1_Paint);
             TopMost = false;
             WindowState = FormWindowState.Maximized;
+            Logger.Info("Window style changed");
             Windows.ShowWindow(Windows.FindWindow("Shell_TrayWnd", null), Windows.SW_HIDE);
+            Logger.Info("Hide taskbar");
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Windows.ShowWindow(Windows.FindWindow("Shell_TrayWnd", null), Windows.SW_SHOW);
+            Logger.Info("Show taskbar");
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -240,12 +311,14 @@ namespace TW_Desktop
             bm = new Bitmap(DisplayRectangle.Width, DisplayRectangle.Height);
             graphics = Graphics.FromImage(bm);
             Invalidate();
+            Logger.Info("Window size changed, redrawing window");
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && !hasMouseEventAction)
             {
+                Logger.Info("Show Context Menu");
                 Font f = new Font(fontManager.GetLoadedFont("Microsoft YaHei"), 12);
                 float cw = 0;
                 cMenuPos = Cursor.Position;
@@ -275,6 +348,7 @@ namespace TW_Desktop
             Font cf = new Font(fontManager.GetLoadedFont("Microsoft YaHei"), 12);
             if (showContextMenu && !new Rectangle(cMenuPos, new Size(cMenuWidth, cMenuItems.Length * (int)(graphics.MeasureString("Height Test", cf).Height + 6))).Contains(Cursor.Position))
             {
+                Logger.Info("Hide Context Menu");
                 showContextMenu = false;
                 hasMouseEventAction = true;
             }

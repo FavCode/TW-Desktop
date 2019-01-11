@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TW Desktop", "TW Desktop\TW
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DesktopTray", "DesktopTray\DesktopTray.vcxproj", "{9CAEF356-760E-4682-BFB9-898A277DA8C4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{8522EE1A-C76F-4AAD-AB1B-C5DBBADD9862}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPlayerQuery", "MusicPlayerQuery\MusicPlayerQuery.csproj", "{9FA2B688-8A8B-404B-A121-859CE7B16B0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TWDesktopPluginSdk", "TWDesktopPluginSdk\TWDesktopPluginSdk.csproj", "{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,9 +45,36 @@ Global
 		{9CAEF356-760E-4682-BFB9-898A277DA8C4}.Release|x64.Build.0 = Release|x64
 		{9CAEF356-760E-4682-BFB9-898A277DA8C4}.Release|x86.ActiveCfg = Release|Win32
 		{9CAEF356-760E-4682-BFB9-898A277DA8C4}.Release|x86.Build.0 = Release|Win32
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Debug|x64.Build.0 = Debug|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Debug|x86.Build.0 = Debug|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Release|x64.ActiveCfg = Release|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Release|x64.Build.0 = Release|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Release|x86.ActiveCfg = Release|Any CPU
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F}.Release|x86.Build.0 = Release|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Debug|x64.Build.0 = Debug|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Debug|x86.Build.0 = Debug|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Release|x64.ActiveCfg = Release|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Release|x64.Build.0 = Release|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Release|x86.ActiveCfg = Release|Any CPU
+		{413DE357-0A1C-43C6-9FCA-9A3DD9DC8BDB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9FA2B688-8A8B-404B-A121-859CE7B16B0F} = {8522EE1A-C76F-4AAD-AB1B-C5DBBADD9862}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1A219BA-ACB6-48F4-BADF-C255C9EEABD8}

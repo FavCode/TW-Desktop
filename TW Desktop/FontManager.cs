@@ -54,6 +54,7 @@ namespace TW_Desktop
             GCHandle hObject = GCHandle.Alloc(font, GCHandleType.Pinned);
             IntPtr ptr = hObject.AddrOfPinnedObject();
             pfc.AddMemoryFont(ptr, font.Length);
+            Logger.Info(pfc.Families.Last().Name + "(" + font.Length + " byte) loaded");
         }
 
         public void LoadFont(byte[] font)
@@ -61,6 +62,7 @@ namespace TW_Desktop
             GCHandle hObject = GCHandle.Alloc(font, GCHandleType.Pinned);
             IntPtr ptr = hObject.AddrOfPinnedObject();
             pfc.AddMemoryFont(ptr, font.Length);
+            Logger.Info(pfc.Families.Last().Name + "(" + font.Length + " byte) loaded");
         }
 
         public void LoadFonts()
@@ -70,6 +72,7 @@ namespace TW_Desktop
 
         public void LoadFonts(string endWith)
         {
+            Logger.Info("Loading fonts with " + endWith + " suffix");
             foreach (string file in resources)
                 if (file.EndsWith(endWith))
                     LoadFont(file);
